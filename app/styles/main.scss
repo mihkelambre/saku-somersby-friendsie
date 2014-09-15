@@ -1,0 +1,68 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+//@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+body {
+  width: 810px;
+  height: 980px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.image {
+  background-repeat: no-repeat;
+}
+
+.bg {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 810px;
+  height: 935px;
+  background-image: url('../images/bg.jpg');
+
+  -webkit-transition: background-position 1s;
+  -webkit-transition-timing-function: ease-in-out;
+  transition: background-position 1s;
+  transition-timing-function: ease-in-out;
+
+  &.intro {
+    background-position: 0px 0px;
+  }
+  &.upload {
+    background-position: -810px 0px;
+  }
+}
+
+.footer {
+  position: absolute;
+  top: 935px;
+  left: 0px;
+  width: 810px;
+  height: 45px;
+  background-image: url('../images/footer.jpg');
+}
+
+.page {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 810px;
+  height: 935px;
+  &.intro {
+    .title {
+      position: absolute;
+      top: 37px;
+      left: 104px;
+      width: 601px;
+      height: 132px;
+      background-image: url('../images/intro/title.png');
+    }
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+
+}
