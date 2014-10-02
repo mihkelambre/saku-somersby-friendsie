@@ -1,0 +1,124 @@
+@font-face {
+  font-family: 'somersby_header_2009regular';
+  src: url('../../fonts/somersby_header_2009-webfont.eot');
+  src: url('../../fonts/somersby_header_2009-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../../fonts/somersby_header_2009-webfont.woff2') format('woff2'),
+       url('../../fonts/somersby_header_2009-webfont.woff') format('woff'),
+       url('../../fonts/somersby_header_2009-webfont.ttf') format('truetype'),
+       url('../../fonts/somersby_header_2009-webfont.svg#somersby_header_2009regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.bg {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: url(../images/bg.jpg) no-repeat top center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: visible;
+}
+.title {
+  position: relative;
+  margin-top: 5%;
+  width: 100%;
+  font-family:'somersby_header_2009regular';
+  font-weight: 100;
+  font-size: 2.1em;
+  text-rendering: geometricPrecision;
+  text-align: center;
+  line-height: 1.1em;
+  color: white;
+  text-shadow: -2px 2px #406143;
+}
+
+.friendsie {
+  position: relative;
+  top: 5%;
+  width: 100%;
+  max-width: 400px;
+}
+.friendsie .name {
+  margin-bottom: 3%;
+  font-family:'somersby_header_2009regular';
+  font-weight: 100;
+  font-size: 1.3em;
+  text-rendering: geometricPrecision;
+  text-align: center;
+  color: #3f891c;
+  text-shadow: -1px 1px #FFF;
+}
+.friendsie .imageHolder {
+  position: relative;
+  width: 90%;
+  left: 50%;
+  margin-left: -45%;
+}
+.friendsie .photo {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  margin: 2.5%;
+  width: 95%;
+}
+.friendsie .frame {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+.friendsie .like {
+  margin-top: 5%;
+  text-align: center;
+}
+.friendsie .desc {
+  color: black;
+  position: relative;
+  margin-top: 5%;
+  width: 80%;
+  font-size: .8em;
+  font-family:'ITC Franklin Gothic W02';
+  font-weight: 200;
+  text-align: center;
+  text-rendering: geometricPrecision;
+  line-height: 1.4em;
+  padding: 0px 10%;
+  padding-bottom: 25%;
+}
+.disc {
+  color: #bcaa7f;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  margin-top: 5%;
+  font-size: .7em;
+  font-family:'ITC Franklin Gothic W02';
+  font-weight: 200;
+  text-align: center;
+  text-rendering: geometricPrecision;
+  line-height: 1.2em;
+  padding: 5px;
+  padding-top: 15px;
+  text-transform: uppercase;
+  background: url(../images/footer.jpg) repeat-x top left;
+}
+
+@media (min-width: 600px) {
+  .friendsie {
+    position: relative;
+    width: 70%;
+    height: 30%;
+    margin: 0px auto;
+  }
+}

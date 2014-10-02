@@ -1,3 +1,16 @@
+<!--<?php
+  require '../Facebook/facebook.php';
+
+  $facebook = new Facebook(array(
+    'appId'  => '1469057436688946',
+    'secret' => '39c85eacc869af299e44479e14c5e037',
+    'sharedSession' => true
+  ));
+
+  $signed_request = $facebook->getSignedRequest();
+  $app_data = $signed_request["app_data"];
+?>-->
+
 <!doctype html>
 <html class="no-js">
   <head>
@@ -8,11 +21,16 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/dropzone/downloads/css/dropzone.css" />
     <!-- endbower -->
     <!-- endbuild -->
+    <link type="text/css" rel="stylesheet" href="//fast.fonts.net/cssapi/7da1ff30-a409-41e5-a22e-303220379ecf.css"/>
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <link type="text/css" rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <script type="text/javascript">
+      window.tabData = '<?php echo $app_data; ?>';
+    </script>
   </head>
   <body ng-app="somersbyFriendsieApp">
     <!--[if lt IE 7]>
@@ -20,15 +38,325 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="bg image" ng-controller="BackgroundController" ng-class="getClass()"></div>
-      <div class="footer image"></div>
-      <div class="page intro" ng-controller="PageIntroController">
-        <div class="title image" ng-click="gotoUpload()"></div>
-        {{ kala }}
+    <div class="container" ng-controller="MainController" ng-class="getClass()">
+      <div class="bg image"></div>
+      <div class="balloon image"></div>
+      <div class="btn bottles image" ng-click="goto('http://saku.ee/est/saku-joogid/siidrid/64/somersby', true)"></div>
+      <div class="example image"></div>
+      <div class="footer image">
+        <div class="btn btn-rules" ng-click="$root.showRules = !$root.showRules" href="#footer-rules" du-smooth-scroll></div>
+        <div class="disclaimer"></div>
+      </div>
+      <div class="prizes" ng-class="{opened: $root.showPrizes}">
+        <div class="bg"></div>
+        <div class="btn btn-close" ng-click="$root.showPrizes = false"></div>
+        <div class="btn btn-close down" ng-click="$root.showPrizes = false"></div>
+        <div class="title">Auhinnad</div>
+        <div class="pre">
+          Iga päev võidab üks #friendsie autor Lord Somersby poolt<br/>
+          käsitsi komplekteeritud friendsie-paki, mis sisaldab:
+        </div>
+        <div class="prize prize-a">
+          <img src="images/prizes_stick.png" />
+          <div class="title">Selfie Stick</div>
+          <div class="desc">Kaasaskantav pulk, millega mahutad oma mobiilifotode peale veel rohkem sõpru. Kui mitu? Proovi ja anna meile teada.</div>
+        </div>
+        <div class="prize prize-b">
+          <img src="images/prizes_splitter.png" />
+          <div class="title">Audiosplitter</div>
+          <div class="desc">Tahad ühistranspordis oma mobiilist sõpradele head laulu mängida? Audiosplitterisse saad pista 5 paari kõrvaklappe, et korraldada päris isiklik silent-disco.</div>
+        </div>
+        <div class="prize prize-c">
+          <img src="images/prizes_boom.png" />
+          <div class="title">Bluetooth kõlar</div>
+          <div class="desc">Juhtmed on tüütud. Aga nagu Lord Somersby vana sõber Harald Sinihammas ühendas Taani ja Norra, saad sina ühendada oma mobiili ja selle ägeda kõlari juhtmevabalt.</div>
+        </div>
+      </div>
+      <div class="pages">
+        <!-- INTRO -->
+        <div class="page intro" ng-controller="PageIntroController" ng-class="getAnimationClass()">
+          <div class="title image">
+            Astu Lord Somersby õukonda.<br/>
+            Tee oma selfiest #friendsie!
+          </div>
+          <div class="line image"></div>
+          <div class="photo" ng-class="getClass()"></div>
+          <div class="panel">
+            <p>Selfied on nii aasta 2010. Tee neist parem Somersby sõbrapildid - <b>#friendsied</b>. Iga päev annab Lord Somersby kõige rohkem LIKE’i saanud #friendsiele ühe väga laheda ja sõpru kokku toova auhinna - piilu auhindu <span class="btn" ng-click="$root.showPrizes = true">siit</span>.</p>
+
+            <div class="btn age-check" ng-model="ageChecked" ng-click="ageChecked = !ageChecked" ng-class="{checked: ageChecked, shake: shakeCheck}"></div>
+
+            <div class="btn-make-your-own" ng-click="checkAgeCheck()" ng-mouseover="shakeCheck = true" ng-mouseout="shakeCheck = false" ng-class="{disabled: !ageChecked, btn: ageChecked}"></div>
+          </div>
+          <div class="btn btn-show-all" ng-click="goto('gallery')"></div>
+        </div>
+        <!-- CREATE -->
+        <div class="page create" ng-controller="PageCreateController">
+          <div class="title image" ng-class="getStepClass()">
+            <div class="step" id="step-1"></div>
+            <div class="arrow" id="arrow-12"></div>
+            <div class="step" id="step-2"></div>
+            <div class="arrow" id="arrow-23"></div>
+            <div class="step" id="step-3"></div>
+          </div>
+          <div class="line image"></div>
+          <div class="btn btn-show-all" ng-click="goto('gallery')"></div>
+          <!-- UPLOAD -->
+          <div class="step-container" id="upload" ng-class="{active: getStep() == 'upload'}">
+            <div class="panel">
+              <div class="border image btn" ng-dropzone dropzone="dz" dropzone-config="dzConfig" event-handlers="dzEventHandlers"></div>
+              <p>Oma rõõmsa, kurva,<br/>lõbusa või kurja selfie saad<br/>üles laadida ka siia<br/>aknasse lohistades. <b>Lase käia!</b></p>
+              <div class="btn-upload"></div>
+            </div>
+          </div>
+          <!-- LOADING -->
+          <div class="step-container" id="loading" ng-class="{active: getStep() == 'loading'}">
+            <div class="text">Pisut kannatust...</div>
+            <div class="loader" title="0">
+              <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+              <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+              <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                C22.32,8.481,24.301,9.057,26.013,10.047z">
+                <animateTransform attributeType="xml"
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 20 20"
+                  to="360 20 20"
+                  dur="0.5s"
+                  repeatCount="indefinite"/>
+                </path>
+              </svg>
+            </div>
+          </div>
+          <!-- LOADED -->
+          <div class="step-container" id="loaded" ng-class="{active: getStep() == 'loaded'}">
+              <img ng-if="userPhoto" ng-src="{{userPhoto}}" />
+              <div class="layers" ng-drop="true">
+                <div class="layer {{ layer.class }}" ng-repeat="layer in layers" image-object="layer" ng-class="{selected: selectedLayer.class == layer.class}" moveable>
+                  <img ng-src="images/create/items/{{ layer.class }}.png" />
+                </div>
+              </div>
+              <div class="user-photo-frame"></div>
+
+              <div class="toolbar" ng-show="selectedLayer">
+                <div class="btn btn-zoom-in" ng-click="toolZoomIn()"></div>
+                <div class="btn btn-zoom-out" ng-click="toolZoomOut()"></div>
+                <div class="btn btn-rotate-left" ng-click="toolRotateLeft()"></div>
+                <div class="btn btn-rotate-right" ng-click="toolRotateRight()"></div>
+                <div class="btn btn-done" ng-click="toolDone()"></div>
+                <div class="btn btn-cancel" ng-click="toolCancel()"></div>
+              </div>
+
+              <div class="test-friendsie">
+                <img ng-if="testFriendsie" ng-src="{{testFriendsie}}" />
+              </div>
+              
+              <div class="btn btn-reload image" ng-dropzone dropzone="dz2" dropzone-config="dzConfig" event-handlers="dzEventHandlers"></div>
+
+              <div class="desc">
+                Muuda nüüd oma selfie <b>#friendsieks</b>. Tõsta<br/>
+                Lord Somersby õukondlased oma pildile ja tee<br/>
+                neid vajadusel suuremaks või väiksemaks.
+              </div>
+
+              <div class="items">
+                <div class="item" id="a" ng-class="{added: isLayerAdded(draggables[0])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[0]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[0])"></div>
+                </div>
+                <div class="item" id="b" ng-class="{added: isLayerAdded(draggables[1])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[1]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[1])"></div>
+                </div>
+                <div class="item" id="c" ng-class="{added: isLayerAdded(draggables[2])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[2]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[2])"></div>
+                </div>
+                <div class="item" id="d" ng-class="{added: isLayerAdded(draggables[3])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[3]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[3])"></div>
+                </div>
+                <div class="item" id="e" ng-class="{added: isLayerAdded(draggables[4])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[4]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[4])"></div>
+                </div>
+                <div class="item" id="f" ng-class="{added: isLayerAdded(draggables[5])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[5]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[5])"></div>
+                </div>
+                <div class="item" id="g" ng-class="{added: isLayerAdded(draggables[6])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[6]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[6])"></div>
+                </div>
+                <div class="item" id="h" ng-class="{added: isLayerAdded(draggables[7])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[7]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[7])"></div>
+                </div>
+                <div class="item" id="i" ng-class="{added: isLayerAdded(draggables[8])}">
+                  <div class="icon" ng-drag="true" ng-drag-data="draggables[8]" ng-drag-success="onDragComplete($data,$event)"></div>
+                  <div class="btn btn-remove" ng-click="removeLayer(draggables[8])"></div>
+                </div>
+              </div>
+
+              <div class="desc_share">
+                Kui pilt valmis, jaga seda ka<br/>
+                oma seinale ja kutsu sõpru seda LIKE’ma!<br/>
+                Mida rohkem, seda uhkem võimalus võita. LIKE!
+              </div>
+
+              <div class="btn btn-ready" ng-click="friendsify()"></div>
+          </div>
+          <!-- ASK TO LIKE -->
+          <div class="step-container" id="askToLike" ng-class="{active: getStep() == 'askToLike' || getStep() == 'form' || getStep() == 'registered'}">
+            <div class="panel">
+              <div id="like" ng-class="{active: getStep() == 'askToLike'}">
+                <p>
+                  Kui Sulle meeldis Lord Somersby<br/>
+                  <b>#friendsie</b> aktsioon, siis meeldivad<br/>
+                  Sulle ka tõenäoliselt tema<br/>
+                  järgmised ettevõtmised!
+                  <span><b>Astu Lord Somersby õukonda!</b></span>
+                </p>
+                <div class="fb-like btn" data-href="https://www.facebook.com/Somersby" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+                <div class="click-here"></div>
+                <div class="btn btn-skip" ng-click="skipLike()"></div>
+              </div>
+              <div id="form" ng-class="{active: getStep() == 'form'}">
+                <p>
+                  Et Lord Somersby saaks võidu puhul<br/>
+                  Sinuga ühendust võtta, anna meile ka<br/>
+                  enda kontaktandmed. 
+                </p>
+                <form>
+                  <input type="text" id="name" ng-model="userRegister.name" placeholder="Sinu nimi" ng-class="{error: registerErrors['name']}" required>
+                  <input type="text" id="phone" ng-model="userRegister.phone" placeholder="Sinu telefoni number" ng-class="{error: registerErrors['phone']}" required>
+                  <input type="text" id="email" ng-model="userRegister.email" placeholder="Sinu e-mail" ng-class="{error: registerErrors['email']}" required>
+                </form>
+                <div class="btn btn-register" ng-click="register()"></div>
+              </div>
+              <div id="registered" ng-class="{active: getStep() == 'registered'}">
+                <div class="hurraa"></div>
+                <p>
+                  Sinu kontaktid on<br/>
+                  Lord Somersbyl nüüd olemas.<br/>
+                  Rõõmsate sõnumite puhul võtab<br/>
+                  Lord Sinuga ise ühendust.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- GALLERY -->
+        <div class="page gallery" ng-controller="PageGalleryController">
+          <div class="title image">
+            Astu Lord Somersby õukonda.<br/>
+            Tee oma selfiest #friendsie!
+          </div>
+          <div class="line image"></div>
+          <div class="filters">
+            <div class="label"></div>
+            <div class="btn btn-all" ng-click="filter = 'all'" ng-class="{passive: filter != 'all'}"></div>
+            <div class="btn btn-friends" ng-click="filter = 'friends'" ng-class="{passive: filter != 'friends'}"></div>
+            <div class="btn btn-winners" ng-click="filter = 'winners'" ng-class="{passive: filter != 'winners'}"></div>
+          </div>
+          <div class="btn btn-make-your-own" ng-click="goto('intro')"></div>
+          <div class="scrollArea">
+            <div class="items scroll-body" slimscroll="{railVisible: true, height: 616}">
+              <div class="space"></div>
+              <div class="item" ng-repeat="item in items | filter:q" ng-click="loadFriendsie(item); goto('friendsie');">
+                <img ng-src="{{ item.photo }}" />
+                <div class="hover"></div>
+                <div class="user-photo-frame" ng-drop="true"></div>
+                <div class="info">
+                  <div class="name">{{ item.name }}</div>
+                  <div class="like">
+                    <div fb-like url="{{ item.url }}"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="item winner" ng-show="period.winner != 'nil'" ng-repeat="period in winners | filter:q" ng-click="loadFriendsie(period.winner); goto('friendsie');">
+                <img ng-src="{{ period.winner.photo }}" />
+                <div class="hover"></div>
+                <div class="user-photo-frame" ng-drop="true"></div>
+                <div class="info">
+                  <div class="name">
+                    <span>{{ period.date }}</span><br/>
+                    {{ period.winner.name }}<br/>
+                    <div class="like_count">234</div>
+                  </div>
+                  <!--<div class="like">
+                    <div fb-like url="{{ period.winner.url }}"></div>
+                  </div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="shadow header"></div>
+          <div class="shadow footer"></div>
+        </div>
+        <!-- FRIENDSIE -->
+        <div class="page friendsie" ng-controller="PageFriendsieController">
+          <div class="title image">
+            Astu Lord Somersby õukonda.<br/>
+            Tee oma selfiest #friendsie!
+          </div>
+          <div class="line image"></div>
+          <img ng-if="friendsie" ng-src="{{ friendsie.photo }}" />
+          <div class="photo-frame"></div>
+          <div class="right">
+            <div class="name">{{ friendsie.name }}</div>
+            <div class="btn-like"></div>
+            <div class="btn btn-make-your-own" ng-click="goto('intro')"></div>
+          </div>
+          <div class="btn btn-show-all" ng-click="goto('gallery')"></div>
+        </div>
       </div>
     </div>
+    <div id="footer-rules" class="rules" ng-class="{opened: $root.showRules}">
 
+      <h1> Kampaania reeglid</h1>
+
+      <p>1. Kampaania</p>
+
+      <p>1.1. Kampaania “Lord Somersby #friendsie” (edaspidi: Kampaania) on alates 6.10.2014 – 26.10.2014 (kaasa arvatud) toimuv tarbijamäng, mida korraldab Saku Õlletehase AS (registrikood 10030278, Tallinna mnt 2, Saku, 75501 Harjumaa) (edaspidi: Korraldaja).</p>
+
+      <p>2. Osalemine</p>
+
+      <p>2.1. Kampaanias võivad osaleda kõik vähemalt 18-aastased isikud, kes ei ole Saku Õlletehase AS, OÜ Division Interactive’i ega AS The Division'i töötajad.</p>
+
+      <p>2.2. Kampaanias osalemiseks ei ole vaja osta ega tarbida Saku Õlletehase AS poolt toodetavaid ja/või turustatavaid tooteid.</p>
+
+      <p>2.3. Kampaanias osalemiseks on vaja minna Somersby Facebooki lehele, #friendsie rakenduses oma pilti töödelda, see oma seinale postitada ja LIKE’ koguda.</p>
+
+      <p>2.4. Kampaania võitja selgitatakse välja iga päev kell 00.00. Võitja on see, kes ajavahemikul 00.00 - 23.59 kogub samal päeval postitatud pildile kõige rohkem LIKE.</p>
+
+      <p>3. Auhind</p>
+
+      <p>3.1. Kampaania auhindadeks on: 21 selfie sticki, 21 audiosplitterit ja 21 bluetooth kõlarit.</p>
+
+      <p>.2. Kampaania auhinna võitmisest saab Kampaanias osaleja teada Facebooki lehel Somersby ja e-maili teel.</p>
+
+      <p>3.3. Kampaania auhind on kingitus, mida rahas ei väljastata.</p>
+
+      <p>3.4. Iga kampaanias osaleja saab võita ühe auhinna.</p>
+
+      <p>3.5. Auhinnad toimetatakse võitjateni posti teel hiljemalt 01.02.2015.</p>
+
+      <p>3.6. Kampaania auhinna vastuvõtmist loetakse ühtlasi ka võitjapoolse loa andmisena Korraldajale kasutada võitja nime meedias, reklaamides, PR kampaaniates jms üritustel ilma võitjale selle eest täiendavat tasu maksmata ja vastavat kokkulepet sõlmimata.</p>
+
+      <p>3.7. Kampaanias osaleja kinnitab Korraldajale enda kohta esitatud andmete õigsust, tema vastavust Korraldaja poolt Kampaania kohta kehtestatud reeglitele, tema soovi osaleda Kampaanias ja nõustumist korraldaja poolt Kampaania kohta kehtestatud kõikide tingimustega. Kampaanias osalemisega annab Kampaanias osaleja Korraldajale nõusoleku kasutada ise ja edastada OÜ Division Interactive'ile töötlemiseks oma isikuandmeid Kampaania võitjate nimede avaldamiseks, samuti isikuandmete säilitamiseks kuue kuu jooksul peale Kampaania lõppu võimalike vaidluste lahendamiseks.</p>
+
+      <p>3.8. Kampaania mehhaanika rikkumise puhul on Korraldajal õigus rikkuja tulemus tühistada. Mehaanika rikkumine hõlmab Kampaanias osalemise tulemuse mõjutamist automatiseerimise või muu sarnase tegevuse teel.</p>
+
+      <p>3.9. Kõik Kampaaniast tulenevad vaidlused lahendatakse vastavalt Eesti Vabariigi seadusandlusele.</p>
+
+      <p>3.10. Kõik pretensioonid seoses Kampaania korraldamise ja/või läbiviimisega tuleb saata kirjalikult Kampaania Korraldaja asukohta Tallinna mnt 2, Saku, 75501 Harjumaa märksõnaga "Somersby puu".</p>
+
+      <p>3.11. Kampaania lisainfo telefonil 6 508 400.</p>
+    </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -53,18 +381,6 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -72,15 +388,26 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+    <script src="bower_components/dropzone/downloads/dropzone.min.js"></script>
+    <script src="bower_components/angular-dropzone/lib/angular-dropzone.js"></script>
+    <script src="bower_components/ngDraggable/ngDraggable.js"></script>
+    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/angular-slimscroll/angular-slimscroll.js"></script>
     <!-- endbower -->
+    <script src="bower_components/modernizer/modernizr.js"></script>
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/directives/moveable-directive.js"></script>
+        <script src="scripts/directives/freetrans-directive.js"></script>
+        <script src="scripts/directives/fblike-directive.js"></script>
+        <script src="scripts/controllers/page-intro.js"></script>
+        <script src="scripts/controllers/page-create.js"></script>
+        <script src="scripts/controllers/page-gallery.js"></script>
+        <script src="scripts/controllers/page-friendsie.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/page-intro-controller.js"></script>
-        <script src="scripts/controllers/background-controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>

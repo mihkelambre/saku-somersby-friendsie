@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name somersbyFriendsieApp
- * @description
- * # somersbyFriendsieApp
- *
- * Main module of the application.
- */
 angular
   .module('somersbyFriendsieApp', [
     'ngAnimate',
@@ -17,22 +9,16 @@ angular
     'ngSanitize',
     'ngTouch',
     'facebook',
-    'somersbyFriendsieApp.page',
-    'somersbyFriendsieApp.background'
+    'somersbyFriendsieApp.directives.moveable',
+    'somersbyFriendsieApp.directives.freetrans',
+    'somersbyFriendsieApp.directives.fblike',
+    'somersbyFriendsieApp.pages.intro',
+    'somersbyFriendsieApp.pages.create',
+    'somersbyFriendsieApp.pages.gallery',
+    'somersbyFriendsieApp.pages.friendsie'
   ])
   .config(function ($routeProvider, FacebookProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
 
-    FacebookProvider.init('1482326585362031');
+    FacebookProvider.init('1469057436688946');
+
   });
