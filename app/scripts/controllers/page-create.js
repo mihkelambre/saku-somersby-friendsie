@@ -153,7 +153,7 @@ angular.module('somersbyFriendsieApp.pages.create', ['ngDropzone', 'ngDraggable'
       if($scope.registered) {
         step = 'registered';
       }
-      step = 'loaded';
+      //step = 'loaded';
       return step;
     }
 
